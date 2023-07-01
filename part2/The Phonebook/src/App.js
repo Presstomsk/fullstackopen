@@ -1,21 +1,9 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios' // axios
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
-
-function IsNameAlreadyAdded(persons, newName) {
-  var isNameAlreadyAdded = false;    
-
-  persons.forEach(person => {
-    if (person.name === newName)
-    {       
-      isNameAlreadyAdded = true;     
-    }
-  }) 
-
-  return isNameAlreadyAdded;
-}
+import NameChecking from './services/NameChecking'
+import PersonService from './services/PersonService'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -24,40 +12,58 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   useEffect(() => {    //useEffect
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {        
-        setPersons(response.data)
-      })
+    PersonService
+      .getAll()
+      .then(persons => setPersons(persons))      
   }, [])
 
   const HandleNameChange = (event) => setNewName(event.target.value)   
   const HandleNumberChange = (event) => setNewNumber(event.target.value)
   const HandleFilterChange = (event) => setFilter(event.target.value)
 
-  const personsToShow = filter === '' ? persons : persons.filter(person => person.name.toLowerCase().includes(filter)) // filter
+  const personsToShow = filter === '' ? persons : persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase())) // filter
 
   const AddPerson = (event) => {    
     event.preventDefault()   //disable submitting form to server
 
-    if (IsNameAlreadyAdded(persons, newName))
+    if (NameChecking.IsNameAlreadyAdded(persons, newName))
     {
-      alert(`${newName} is already added to phonebook`); 
+      if (window.confirm(`You want to update ${newName} contact?`))
+      {
+        const person = persons.find(person => person.name === newName) // find       
+        const changedPerson = {...person, number: newNumber}
+        
+        PersonService
+          .update(changedPerson.id, changedPerson)
+          .then(updatedPerson => setPersons(persons.map(person => person.id !== changedPerson.id ? person : updatedPerson)))
+      }
     }
     else if (newName !== '')
     {
       
       const newPerson = {
         name: newName,
-        number: newNumber,
-        id: persons.length + 1      
+        number: newNumber   
       }      
       
-      setPersons(persons.concat(newPerson))
+      PersonService
+        .create(newPerson)      
+        .then(newPerson => setPersons(persons.concat(newPerson)))
     }
 
     setNewName('')
     setNewNumber('')
+  } 
+
+  const DeletePerson = (person) =>
+  {
+    if (window.confirm(`Delete ${person.name}?`))
+    {
+      PersonService
+        .deletePerson(person.id)
+        .then(() => setPersons(persons.filter(savedPerson => savedPerson.id !== person.id))
+        )
+    }
   }
 
   return ( // forms
@@ -67,7 +73,7 @@ const App = () => {
       <h2>Add a new contact</h2>     
         <PersonForm name={newName} number={newNumber} onNameChange={HandleNameChange} onNumberChange={HandleNumberChange} onSubmit={AddPerson}/>
       <h2>Numbers</h2>    
-        <Persons persons={personsToShow}/>    
+        <Persons persons={personsToShow} onDelete={DeletePerson}/>    
     </div>
   )
 }
