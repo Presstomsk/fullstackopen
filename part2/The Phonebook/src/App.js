@@ -1,26 +1,8 @@
-import { useState } from 'react'
-
-const Persons = ({persons}) => <p>{persons.map(person => <Person key={person.id} name={person.name} number={person.number}/>)}</p>
-
-const Person = ({name, number}) => <>{name} {number}<br /></>
-
-const Filter = ({value, onChange}) => <form><div>Filter shown with: <input value={value} onChange={onChange}/></div></form> 
-
-const PersonForm = ({name, number, onSubmit, onNameChange, onNumberChange}) => {
-  return(
-      <form onSubmit={onSubmit}>
-        <div>
-          name: <input value={name} onChange={onNameChange}/>
-        </div>
-        <div>
-          number: <input value={number} onChange={onNumberChange}/>
-          </div>
-        <div>
-          <button type="submit" >add</button>
-        </div>
-      </form>
-  )
-}
+import { useState, useEffect } from 'react'
+import axios from 'axios' // axios
+import Persons from './components/Persons'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
 
 function IsNameAlreadyAdded(persons, newName) {
   var isNameAlreadyAdded = false;    
@@ -36,12 +18,18 @@ function IsNameAlreadyAdded(persons, newName) {
 }
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-1234567', id: 1 }
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+
+  useEffect(() => {    //useEffect
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {        
+        setPersons(response.data)
+      })
+  }, [])
 
   const HandleNameChange = (event) => setNewName(event.target.value)   
   const HandleNumberChange = (event) => setNewNumber(event.target.value)
