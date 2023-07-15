@@ -1,6 +1,7 @@
 import Country from "./Country"
+import ShowButton from "./ShowCountryButton"
 
-const Countries = ({countries}) => {
+const Countries = ({countries, showCountry}) => {
     if (countries.length > 10)
     {
         return(
@@ -12,7 +13,7 @@ const Countries = ({countries}) => {
         if (countries.length > 1)
         {
             return(
-                countries.map(country => <>{country.name.common}<br/></>)
+                countries.map(country => <div>{country.name.common} <ShowButton showCountry={() => showCountry(country.name.common)}/><br/></div>)
             )
         }
         

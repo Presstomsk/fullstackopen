@@ -18,10 +18,14 @@ const App = () => {
   const countriesToShow = filter === '' ? countries : countries.filter(country => country.name.common.toLowerCase().includes(filter.toLowerCase()) ||
                                                                                 country.name.official.toLowerCase().includes(filter.toLowerCase())) // filter  
 
+  const showCountry = (country) => {
+    setFilter(country)
+  }
+
   return ( // forms
     <div>
       <Filter value={filter} onChange={HandleFilterChange}/>
-      <Countries countries={countriesToShow}/>       
+      <Countries countries={countriesToShow} showCountry={showCountry}/>       
     </div>
   )
 }
