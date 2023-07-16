@@ -1,6 +1,10 @@
 const express = require('express') //express
+const morgan = require('morgan') //morgan 
+
 const app = express()
-app.use(express.json())
+app.use(express.json()) //middleware
+morgan.token('content', (req, res) => JSON.stringify(req.body))//create token
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :content'))
 
 let notes = [
     { 
@@ -81,4 +85,4 @@ app.delete('/api/persons/:id', (request, response) => { //rest delete
   })  
 
 const PORT = 3001
-app.listen(PORT, () => { console.log(`Server running on port ${PORT}`) })
+app.listen(PORT, () => { console.log(`Server running on port ${PORT}`) })//listen port
