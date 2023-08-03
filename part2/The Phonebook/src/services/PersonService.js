@@ -1,5 +1,5 @@
 import axios from 'axios' //axios and promises
-const baseUrl = 'http://localhost:3001/persons' //crud
+const baseUrl = 'http://localhost:3001/api/persons' //crud
 
 const getAll = () => axios.get(baseUrl).then(response => response.data)  
 const create = (newObject) => axios.post(baseUrl, newObject).then(response => response.data)
