@@ -1,6 +1,6 @@
-require("dotenv").config() // add config from .env 
+require("dotenv").config() // add config from .env
 const express = require('express') //express
-const morgan = require('morgan') //morgan 
+const morgan = require('morgan') //morgan
 const cors = require('cors')//cors
 const app = express()
 const Person = require('./models/person')//person from modul
@@ -14,7 +14,7 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :c
 app.get('/info', (request, response) => { // rest get info
   Person.find({}).then(persons => {
     response.send(`Phonebook has info for ${persons.length} people<br/>${new Date()}`)
-  })  
+  })
 })
 
 app.get('/api/persons', (request, response) => {// rest get all
@@ -30,9 +30,9 @@ app.get('/api/persons/:id', (request, response, next) => {//find person by Id
         response.json(person)
       } else {
         response.status(404).end()
-      }      
+      }
     })
-    .catch(error => next(error)) 
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => { //rest delete by Id
@@ -40,7 +40,7 @@ app.delete('/api/persons/:id', (request, response, next) => { //rest delete by I
     .then(person => {
       response.status(204).end()
     })
-    .catch(error => next(error)) 
+    .catch(error => next(error)) // AddValidation
 })
 
 app.put('/api/persons/:id', (request, response, next) => {//rest put
@@ -57,34 +57,34 @@ app.put('/api/persons/:id', (request, response, next) => {//rest put
     })
     .catch(error => next(error))
 })
-  
+
 app.post('/api/persons', (request, response) => { // post add person
   const body = request.body
-  
+
   if (!body.name || !body.number) {
-    return response.status(400).json({ 
-      error: 'name or number missing' 
+    return response.status(400).json({
+      error: 'name or number missing'
     })
-  } 
-  
+  }
+
   const person = new Person({
     name: body.name,
     number: body.number || ""
-  })  
+  })
 
   person.save().then(savedPerson => {
     response.json(savedPerson)
   })
-  .catch(error => next(error)) 
-})  
+    .catch(error => next(error))
+})
 
 const errorHandler = (error, request, response, next) => {//express error handler
   console.error(error.message)
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
-  } else if (error.name === 'ValidationError') {
-    return response.status(400).json({ error: error.message })}; 
+  } else if (error.name === 'ValidationError') { // AddValidation
+    return response.status(400).json({ error: error.message })};
 
   next(error)
 }
