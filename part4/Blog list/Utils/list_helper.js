@@ -1,4 +1,5 @@
 const enumerable = require('linq')
+const Blog = require('../Models/blog')
 
 const dummy = (blogs) => {
   return 1
@@ -48,10 +49,16 @@ const mostLikes = (blogs) => {
   }
 }
 
+const blogsInDb = async () => {
+  const blogs = await Blog.find({})
+  return blogs.map(blog => blog.toJSON())
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
-  mostLikes
+  mostLikes,
+  blogsInDb
 }
