@@ -3,16 +3,22 @@ const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../Models/blog')
+const User = require('../Models/user')
 const blogs = require('./blogs')
+const bcrypt = require('bcryptjs')
 const listHelper = require('../Utils/list_helper')
 
 describe('blog api', () => {
   beforeEach(async () => {
+    await User.deleteMany({})
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({ username: 'root', name: 'Roman', passwordHash })
+    await user.save()
     await Blog.deleteMany({})
     const blogObjects = blogs.map(blog => new Blog(blog))
     const promiseArray = blogObjects.map(blog => blog.save())
     await Promise.all(promiseArray)
-  })
+  },30000)
 
   test('all blogs are returned', async () => {
     const response = await api.get('/api/blogs')
@@ -30,12 +36,16 @@ describe('blog api', () => {
     expect(blogs[0].id).toBeDefined();
   })
 
-  test('a valid blog can be added ', async () => {
+  test('a valid blog can be added', async () => {
+    const users = await listHelper.usersInDb()
+    const userId = users[0].id
+
     const newBlog = {
       title: "Test_1",
-      author: "Roman Permyakov",
+      author: "root",
       url: "test@google.com",
-      likes: 10
+      likes: 10,
+      user: userId
     }
 
     await api
@@ -47,14 +57,18 @@ describe('blog api', () => {
     const blogsAtEnd = await listHelper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(blogs.length + 1)
     const contents = blogsAtEnd.map(n => n.author)
-    expect(contents).toContain('Roman Permyakov')
+    expect(contents).toContain('root')
   })
 
   test('test that verifies that if the likes property is missing from the request, it will default to the value 0', async () => {
+    const users = await listHelper.usersInDb()
+    const userId = users[0].id
+
     const newBlog = {
       title: "Test_2",
       author: "Roman Permyakov",
-      url: "test@google.com"
+      url: "test@google.com",
+      user: userId
     }
 
     await api
