@@ -6,7 +6,7 @@ const User = require('../Models/user')
 const helper = require('../Utils/list_helper')
 const bcrypt = require('bcryptjs')
 
-describe('when there is initially one user in db', () => {
+describe('user api', () => {
   beforeEach(async () => {
     await User.deleteMany({})
     const passwordHash = await bcrypt.hash('sekret', 10)

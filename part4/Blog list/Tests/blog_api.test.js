@@ -6,6 +6,7 @@ const Blog = require('../Models/blog')
 const User = require('../Models/user')
 const blogs = require('./blogs')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 const listHelper = require('../Utils/list_helper')
 
 describe('blog api', () => {
@@ -38,42 +39,56 @@ describe('blog api', () => {
 
   test('a valid blog can be added', async () => {
     const users = await listHelper.usersInDb()
-    const userId = users[0].id
+    const user = users[0]
+    const userForToken = {
+      username: user.username,
+      id: user.id,
+    }
+
+    const token = jwt.sign(userForToken, process.env.SECRET)
 
     const newBlog = {
       title: "Test_1",
-      author: "root",
+      author: user.name,
       url: "test@google.com",
       likes: 10,
-      user: userId
+      user: user.id
     }
 
     await api
       .post('/api/blogs')
       .send(newBlog)
+      .set('authorization', `Bearer ${token}`)
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
     const blogsAtEnd = await listHelper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(blogs.length + 1)
     const contents = blogsAtEnd.map(n => n.author)
-    expect(contents).toContain('root')
+    expect(contents).toContain(user.name)
   })
 
   test('test that verifies that if the likes property is missing from the request, it will default to the value 0', async () => {
     const users = await listHelper.usersInDb()
-    const userId = users[0].id
+    const user = users[0]
+    const userForToken = {
+      username: user.username,
+      id: user.id,
+    }
+
+    const token = jwt.sign(userForToken, process.env.SECRET)
 
     const newBlog = {
       title: "Test_2",
-      author: "Roman Permyakov",
+      author: user.name,
       url: "test@google.com",
-      user: userId
+      user: user.id
     }
 
     await api
       .post('/api/blogs')
       .send(newBlog)
+      .set('authorization', `Bearer ${token}`)
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
@@ -83,8 +98,17 @@ describe('blog api', () => {
   })
 
   test('blog without title is not added', async () => {
+    const users = await listHelper.usersInDb()
+    const user = users[0]
+    const userForToken = {
+      username: user.username,
+      id: user.id,
+    }
+
+    const token = jwt.sign(userForToken, process.env.SECRET)
+
     const newBlog = {
-      author: "Roman Permyakov",
+      author: user.name,
       url: "test@google.com",
       likes: 100
     }
@@ -92,6 +116,7 @@ describe('blog api', () => {
     await api
       .post('/api/blogs')
       .send(newBlog)
+      .set('authorization', `Bearer ${token}`)
       .expect(400)
 
     const blogsAtEnd = await listHelper.blogsInDb()
@@ -99,15 +124,25 @@ describe('blog api', () => {
   })
 
   test('blog without url is not added', async () => {
+    const users = await listHelper.usersInDb()
+    const user = users[0]
+    const userForToken = {
+      username: user.username,
+      id: user.id,
+    }
+
+    const token = jwt.sign(userForToken, process.env.SECRET)
+
     const newBlog = {
       title: "Test_3",
-      author: "Roman Permyakov",
+      author: user.name,
       likes: 100
     }
 
     await api
       .post('/api/blogs')
       .send(newBlog)
+      .set('authorization', `Bearer ${token}`)
       .expect(400)
 
     const blogsAtEnd = await listHelper.blogsInDb()
