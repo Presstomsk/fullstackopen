@@ -1,70 +1,75 @@
 import { useState } from 'react'
-
+import PropTypes from 'prop-types'
 
 const BlogForm = ({ createBlog, createNotification }) => {
 
-    const [title, setTitle] = useState('')
-    const [author, setAuthor] = useState('')
-    const [url, setUrl] = useState('')
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
-    const addBlog = async (event) => {
-        event.preventDefault()
-        
-        try {
-            const blog = {
-                title: title,
-                author: author,
-                url: url
-            }
+  const addBlog = async (event) => {
+    event.preventDefault()
 
-            await createBlog(blog)
+    try {
+      const blog = {
+        title: title,
+        author: author,
+        url: url
+      }
 
-            setTitle('')
-            setAuthor('')
-            setUrl('')
+      await createBlog(blog)
 
-            createNotification({ message: `A new blog ${blog.title} by ${blog.author} added`, isError: false })
-        } catch (exception) {
-            createNotification({ message: 'Error create blog', isError: true })
-        }
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+
+      createNotification({ message: `A new blog ${blog.title} by ${blog.author} added`, isError: false })
+    } catch (exception) {
+      createNotification({ message: 'Error create blog', isError: true })
     }
+  }
 
-    return (
+  return (
+    <div>
+      <h2>Create new</h2>
+
+      <form onSubmit={addBlog}>
         <div>
-            <h2>Create new</h2>
-
-            <form onSubmit={addBlog}>
-                <div>
-                title
-                    <input 
-                        type="text"
-                        value={title}
-                        name="Title"          
-                        onChange={event => setTitle(event.target.value)}
-                    />
-                </div>
-                < div>
-                author
-                    <input
-                        type="text"
-                        value={author}
-                        name="Author"
-                        onChange={event => setAuthor(event.target.value)}
-                    />
-                </div>
-                <div>
-                url
-                    <input
-                        type="text"
-                        value={url}
-                        name="Url"
-                        onChange={event => setUrl(event.target.value)}
-                    />
-                </div>
-                <button type="submit">create</button>
-            </form>  
+            title
+          <input
+            type="text"
+            value={title}
+            name="Title"
+            onChange={event => setTitle(event.target.value)}
+          />
         </div>
-    )   
+        < div>
+            author
+          <input
+            type="text"
+            value={author}
+            name="Author"
+            onChange={event => setAuthor(event.target.value)}
+          />
+        </div>
+        <div>
+            url
+          <input
+            type="text"
+            value={url}
+            name="Url"
+            onChange={event => setUrl(event.target.value)}
+          />
+        </div>
+        <button type="submit">create</button>
+      </form>
+    </div>
+  )
 }
 
-  export default BlogForm
+BlogForm.propTypes = {
+  createBlog: PropTypes.func.isRequired,
+  createNotification: PropTypes.func.isRequired
+}
+
+export default BlogForm
