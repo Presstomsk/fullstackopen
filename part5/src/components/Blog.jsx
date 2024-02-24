@@ -53,14 +53,14 @@ const Blog = ({ blog, currentUser, handleUpdateBlog, handleRemoveBlog, createNot
   }
 
   return (
-    <div style={blogStyle}>
+    <div className='blog' style={blogStyle}>
       <div className='visibleBlogInfo' style={hideWhenVisible}>{blog.title} {blog.author}<button onClick={toggleVisibility}>view</button></div>
       <div className='hiddenBlogInfo' style={showWhenVisible}>
         <div>{blog.title} {blog.author}<button onClick={toggleVisibility}>hide</button></div>
         <div className='url'>{blog.url}</div>
         <div className='likes'>{likes}<button onClick={updateBlog}>like</button></div>
         <div className='publisher'>{blog.user !== undefined ? blog.user.name !== undefined ? blog.user.name : currentUser.name : null}</div>
-        <div style={showWhenMyBlog}><button onClick={removeBlog}>remove</button></div>
+        <div className='remove-button' style={showWhenMyBlog}><button onClick={removeBlog}>remove</button></div>
       </div>
     </div>
   )
