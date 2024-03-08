@@ -19,7 +19,7 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const reducer = (state = initialState, action) => {
+const anecdoteReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_ANECDOTE' : {
       const anecdotes = state.filter(anecdote => anecdote.id !== action.payload.id)
@@ -55,4 +55,4 @@ export const addAnecdote = (content) => {
 
 export const sortByDescendingVotes = (anecdotes) => anecdotes.sort((a,b) => b.votes - a.votes) 
 
-export default reducer
+export default anecdoteReducer
