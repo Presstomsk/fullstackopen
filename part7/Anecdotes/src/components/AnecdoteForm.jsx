@@ -1,30 +1,39 @@
-import { useState } from "react"
 import PropTypes from 'prop-types'
 import { useNavigate } from "react-router-dom"
+import { useField } from "../hooks"
 
 const AnecdoteForm = ({ anecdotes, addAnecdoteHandle, setNotificationHandle }) => {
     const navigate = useNavigate()
 
-    const [content, setContent] = useState('')
-    const [author, setAuthor] = useState('')
-    const [info, setInfo] = useState('')    
+    const content = useField('content')
+    const author = useField('author')
+    const info = useField('info') 
       
     const handleSubmit = (event) => {
         event.preventDefault()
         addNew({
-            content,
-            author,
-            info,
+            content: content.value,
+            author: author.value,
+            info: info.value,
             votes: 0
         })
         navigate('/')        
-        setNotificationHandle(`A new anecdote ${content} created!`)
-        setTimeout(() => {
+        setNotificationHandle(`A new anecdote ${content.value} created!`)
+        setTimeout(() => { 
             setNotificationHandle(null)
-            setContent('')
-            setAuthor('')
-            setInfo('')
-        }, 5000)        
+            resetFields()
+        }, 5000) 
+    }    
+
+    const handleReset = (event) => { 
+        event.preventDefault()       
+        resetFields()
+    }
+    
+    const resetFields = () => {
+        content.onChange()
+        author.onChange()
+        info.onChange()
     }
 
     const addNew = (anecdote) => {
@@ -35,21 +44,22 @@ const AnecdoteForm = ({ anecdotes, addAnecdoteHandle, setNotificationHandle }) =
     return (
         <div>
           <h2>create a new anecdote</h2>
-          <form onSubmit={handleSubmit}>
+          <form>
             <div>
               content
-              <input name='content' value={content} onChange={(event) => setContent(event.target.value)} />
+              <input {...content} />
             </div>
             <div>
               author
-              <input name='author' value={author} onChange={(event) => setAuthor(event.target.value)} />
+              <input {...author} />
             </div>
             <div>
-              url for more info
-              <input name='info' value={info} onChange={(event)=> setInfo(event.target.value)} />
+              url
+              <input {...info} />
             </div>
-            <button>create</button>
-          </form>
+            <button onClick={handleSubmit}>create</button>
+            <button onClick={handleReset}>reset</button>            
+            </form>            
         </div>
     )
 }
