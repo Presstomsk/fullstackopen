@@ -1,5 +1,5 @@
 {
-  "anecdotes": [
+  "blogs": [
     {
       "content": "If it hurts, do it more often",
       "author": "Jez Humble",
@@ -15,11 +15,18 @@
       "id": "2"
     },
     {
-      "id": "b0c2",
+      "id": "d836",
       "content": "Test",
-      "author": "Roman",
+      "author": "Administrator",
       "info": "www.info.com",
-      "votes": 15
+      "votes": 0
+    },
+    {
+      "id": "d266",
+      "content": "Test",
+      "author": "Roman Permyakov",
+      "info": "www.info.com",
+      "votes": 1
     }
   ],
   "users": [

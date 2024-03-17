@@ -15,6 +15,9 @@ const Menu = () => {
       <Link style={padding} to="/create">
         Create new
       </Link>
+      <Link style={padding} to="/users">
+        Users
+      </Link>
       <Link style={padding} to="/about">
         About
       </Link>

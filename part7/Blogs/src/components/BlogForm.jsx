@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useField } from "../hooks";
 import { setNotification } from "../reducers/notificationReducer";
-import { createNewAnecdote } from "../reducers/anecdotesReducer";
+import { createNewBlog } from "../reducers/blogsReducer";
 import { useDispatch } from "react-redux";
 
-const AnecdoteForm = () => {
+const BlogForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ const AnecdoteForm = () => {
       votes: 0,
     });
     navigate("/");
-    dispatch(setNotification(`A new anecdote ${content.value} created!`));
+    dispatch(setNotification(`A new blog ${content.value} created!`));
     setTimeout(() => {
       dispatch(setNotification(null));
       resetFields();
@@ -39,13 +39,13 @@ const AnecdoteForm = () => {
     info.onChange();
   };
 
-  const addNew = (anecdote) => {
-    dispatch(createNewAnecdote(anecdote));
+  const addNew = (blog) => {
+    dispatch(createNewBlog(blog));
   };
 
   return (
     <div>
-      <h2>create a new anecdote</h2>
+      <h2>create a new blog</h2>
       <form>
         <div>
           content
@@ -66,4 +66,4 @@ const AnecdoteForm = () => {
   );
 };
 
-export default AnecdoteForm;
+export default BlogForm;
