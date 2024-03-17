@@ -1,11 +1,10 @@
-import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deleteBlogById, vote } from "../reducers/blogsReducer";
 
-const BlogList = () => {
+const BlogList = ({ blogs }) => {
   const dispatch = useDispatch();
-  const blogs = useSelector((state) => state.blogs);
 
   const removeBlogHandle = (blogId) => {
     dispatch(deleteBlogById(blogId));
@@ -29,6 +28,10 @@ const BlogList = () => {
       </ul>
     </div>
   );
+};
+
+BlogList.propTypes = {
+  blogs: PropTypes.array,
 };
 
 export default BlogList;

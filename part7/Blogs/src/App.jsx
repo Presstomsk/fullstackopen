@@ -3,6 +3,7 @@ import AllRoutes from "./components/AllRoutes";
 import Footer from "./components/Footer";
 import Notification from "./components/Notification";
 import { getBlogsFromDb } from "./reducers/blogsReducer";
+import { getUsersFromDb } from "./reducers/usersReducer";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 
@@ -11,6 +12,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getBlogsFromDb());
+    dispatch(getUsersFromDb());
   }, [dispatch]);
 
   return (

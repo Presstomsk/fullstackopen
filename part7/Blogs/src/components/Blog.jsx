@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 
 const Blog = ({ blog }) => {
-  if (blog === undefined || blog === null) {
+  if (!blog) {
     return null;
   }
 

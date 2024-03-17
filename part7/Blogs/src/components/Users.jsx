@@ -1,31 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useSelector } from "react-redux";
-import { getUsers } from "../services/users";
-import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
-const Users = () => {
-  const [blogsState, setBlogsState] = useState([]);
-  const blogs = useSelector((state) => state.blogs);
-
-  useEffect(() => {
-    getBlogsStats();
-  }, [blogs]);
-
-  const getBlogsStats = async () => {
-    const users = await getUsers();
-    const usersBlogsStates = [];
-    users.forEach((user) => {
-      const userBlogs = blogs.filter((blog) => blog.author === user.username);
-      const userBlogsState = {
-        author: user.username,
-        count: userBlogs.length,
-        id: Math.round(Math.random() * 10000),
-      };
-      usersBlogsStates.push(userBlogsState);
-    });
-    setBlogsState(usersBlogsStates);
-  };
-
+const Users = ({ users, blogs }) => {
   return (
     <div>
       <h2>Users</h2>
@@ -41,16 +17,25 @@ const Users = () => {
           </tr>
         </thead>
         <tbody>
-          {blogsState.map((blogState) => (
-            <tr key={blogState.id}>
-              <td>{blogState.author}</td>
-              <td>{blogState.count}</td>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>
+                <Link to={`/users/${user.id}`}>{user.username}</Link>
+              </td>
+              <td>
+                {blogs.filter((blog) => blog.author === user.username).length}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
   );
+};
+
+Users.propTypes = {
+  users: PropTypes.array,
+  blogs: PropTypes.array,
 };
 
 export default Users;
