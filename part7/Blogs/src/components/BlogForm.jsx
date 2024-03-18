@@ -18,6 +18,7 @@ const BlogForm = () => {
       content: content.value,
       author: author.value,
       info: info.value,
+      comments: [],
       votes: 0,
     });
     navigate("/");

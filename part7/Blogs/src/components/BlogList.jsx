@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { deleteBlogById, vote } from "../reducers/blogsReducer";
+import { deleteBlogById, updateCurrentBlog } from "../reducers/blogsReducer";
 
 const BlogList = ({ blogs }) => {
   const dispatch = useDispatch();
@@ -11,7 +11,7 @@ const BlogList = ({ blogs }) => {
   };
 
   const voteBlogHandle = (blog) => {
-    dispatch(vote({ ...blog, votes: blog.votes + 1 }));
+    dispatch(updateCurrentBlog({ ...blog, votes: blog.votes + 1 }));
   };
 
   return (

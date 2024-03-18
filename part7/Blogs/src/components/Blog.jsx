@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import Comments from "./Comments";
 
 const Blog = ({ blog }) => {
   if (!blog) {
@@ -13,6 +14,8 @@ const Blog = ({ blog }) => {
       has {blog.votes} votes
       <br />
       for more info see <a href={blog.info}>{blog.info}</a>
+      <br />
+      <Comments blog={blog} />
     </div>
   );
 };
