@@ -2,6 +2,15 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deleteBlogById, updateCurrentBlog } from "../reducers/blogsReducer";
+import {
+  Paper,
+  Button,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  TableContainer,
+} from "@mui/material";
 
 const BlogList = ({ blogs }) => {
   const dispatch = useDispatch();
@@ -17,15 +26,35 @@ const BlogList = ({ blogs }) => {
   return (
     <div>
       <h2>Blogs</h2>
-      <ul>
-        {blogs.map((blog) => (
-          <li key={blog.id}>
-            <Link to={`/blogs/${blog.id}`}>{blog.content}</Link>
-            <button onClick={() => voteBlogHandle(blog)}>Vote</button>
-            <button onClick={() => removeBlogHandle(blog.id)}>Remove</button>
-          </li>
-        ))}
-      </ul>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            {blogs.map((blog) => (
+              <TableRow key={blog.id}>
+                <TableCell>
+                  <Link to={`/blogs/${blog.id}`}>{blog.content}</Link>
+                </TableCell>
+                <TableCell>
+                  <Button
+                    variant="contained"
+                    onClick={() => voteBlogHandle(blog)}
+                  >
+                    Vote
+                  </Button>
+                </TableCell>
+                <TableCell>
+                  <Button
+                    variant="contained"
+                    onClick={() => removeBlogHandle(blog.id)}
+                  >
+                    Remove
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };

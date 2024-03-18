@@ -6,32 +6,30 @@
       "info": "https://martinfowler.com/bliki/FrequencyReducesDifficulty.html",
       "votes": 11,
       "id": "1",
-      "comments": [
-        "good blog",
-        "very well"
-      ]
+      "comments": ["good blog", "very well"]
     },
     {
       "content": "Premature optimization is the root of all evil",
       "author": "Donald Knuth",
       "info": "http://wiki.c2.com/?PrematureOptimization",
-      "votes": 9,
+      "votes": 11,
       "id": "2",
-      "comments": [
-        "I like it"
-      ]
+      "comments": ["I like it"]
     },
     {
       "id": "991b",
       "content": "Test",
       "author": "Roman Permyakov",
       "info": "www.info.com",
-      "comments": [
-        "Goood!!!!",
-        "I like it",
-        "Very well",
-        "Good job"
-      ],
+      "comments": ["Goood!!!!", "I like it", "Very well", "Good job", "good"],
+      "votes": 6
+    },
+    {
+      "id": "14e5",
+      "content": "Story",
+      "author": "Administrator",
+      "info": "www.info.com",
+      "comments": ["Good Blog !!!!!!"],
       "votes": 1
     }
   ],

@@ -1,33 +1,35 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { AppBar, Toolbar, Button } from "@mui/material";
 
 const Menu = () => {
   const user = useSelector((state) => state.user);
 
-  const padding = {
-    paddingRight: 5,
-  };
   return (
     <div>
-      <Link style={padding} to="/">
-        Home
-      </Link>
-      <Link style={padding} to="/create">
-        Create new
-      </Link>
-      <Link style={padding} to="/users">
-        Users
-      </Link>
-      <Link style={padding} to="/about">
-        About
-      </Link>
-      {user ? (
-        <em>{user.username} logged in</em>
-      ) : (
-        <Link style={padding} to="/login">
-          Login
-        </Link>
-      )}
+      <AppBar position="static">
+        <Toolbar>
+          <Button color="inherit" component={Link} to="/">
+            Home
+          </Button>
+          <Button color="inherit" component={Link} to="/create">
+            Create new
+          </Button>
+          <Button color="inherit" component={Link} to="/users">
+            Users
+          </Button>
+          <Button color="inherit" component={Link} to="/about">
+            About
+          </Button>
+          {user ? (
+            <em>{user.username} logged in</em>
+          ) : (
+            <Button color="inherit" component={Link} to="/login">
+              Login
+            </Button>
+          )}
+        </Toolbar>
+      </AppBar>
     </div>
   );
 };

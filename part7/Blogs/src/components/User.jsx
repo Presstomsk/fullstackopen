@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { List, ListItem, Paper } from "@mui/material";
 
 const User = ({ user, blogs }) => {
   if (!user) {
@@ -12,11 +13,13 @@ const User = ({ user, blogs }) => {
       <h2>{user.username}</h2>
       <strong>Added blogs</strong>
       <br />
-      <ul>
+      <List>
         {userBlogs.map((blog) => (
-          <li key={blog.id}>{blog.content}</li>
+          <ListItem component={Paper} key={blog.id}>
+            {blog.content}
+          </ListItem>
         ))}
-      </ul>
+      </List>
     </div>
   );
 };

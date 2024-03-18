@@ -3,6 +3,7 @@ import { useField } from "../hooks";
 import { setNotification } from "../reducers/notificationReducer";
 import { createNewBlog } from "../reducers/blogsReducer";
 import { useDispatch } from "react-redux";
+import { TextField, Button } from "@mui/material";
 
 const BlogForm = () => {
   const dispatch = useDispatch();
@@ -46,22 +47,26 @@ const BlogForm = () => {
 
   return (
     <div>
-      <h2>create a new blog</h2>
+      <h2>Create a new blog</h2>
       <form>
         <div>
-          content
-          <input {...content} />
+          <TextField label="content" {...content} />
         </div>
+        <br />
         <div>
-          author
-          <input {...author} />
+          <TextField label="author" {...author} />
         </div>
+        <br />
         <div>
-          url
-          <input {...info} />
+          <TextField label="url" {...info} />
         </div>
-        <button onClick={handleSubmit}>create</button>
-        <button onClick={handleReset}>reset</button>
+        <br />
+        <Button color="primary" onClick={handleSubmit}>
+          create
+        </Button>
+        <Button color="primary" onClick={handleReset}>
+          reset
+        </Button>
       </form>
     </div>
   );

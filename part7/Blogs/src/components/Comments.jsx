@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import CommentsForm from "./CommentsForm";
+import { List, ListItem, Paper } from "@mui/material";
 
 const Comments = ({ blog }) => {
   const comments = blog.comments;
@@ -17,11 +18,13 @@ const Comments = ({ blog }) => {
     <>
       <h3>Comments</h3>
       <CommentsForm blog={blog} />
-      <ul>
+      <List>
         {comments.map((comment) => (
-          <li key={Math.round(Math.random() * 10000)}>{comment}</li>
+          <ListItem component={Paper} key={Math.round(Math.random() * 10000)}>
+            {comment}
+          </ListItem>
         ))}
-      </ul>
+      </List>
     </>
   );
 };

@@ -16,13 +16,14 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <div>
+    <>
       <h1>Software blogs</h1>
       <Menu />
       <Notification />
       <AllRoutes />
+      <br />
       <Footer />
-    </div>
+    </>
   );
 };
 
